@@ -16,4 +16,4 @@ class ElectricalCar(Car):
 
 
 car = Car(250, "lada")
-"""car.print_character()"""
+car.print_character()
