@@ -13,6 +13,7 @@ class Singleton(metaclass=SingletonMeta):
     def some_business_logic(self):
         print("hello")
 
+#dsfsdfds
 
 if __name__ == "__main__":
     s1 = Singleton()
