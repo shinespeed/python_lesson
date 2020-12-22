@@ -5,8 +5,12 @@ class Singleton:
         return cls.instance
 
 
-s = Singleton()
-print("Object created", s)
-s1 = Singleton()
-print("Object created", s1)
-###this test####
+def main():
+    s = Singleton()
+    print("Object created", s)
+    s1 = Singleton()
+    print("Object created", s1)
+
+
+if __name__ == "__main__":
+    main()
