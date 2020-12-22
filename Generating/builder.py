@@ -94,7 +94,6 @@ if __name__ == "__main__":
 
     print("\n")
 
-    # Помните, что паттерн Строитель можно использовать без класса Директор.
     print("Custom product: ")
     builder.produce_part_a()
     builder.produce_part_b()
