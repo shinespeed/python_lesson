@@ -8,10 +8,8 @@ class Creator(ABC):
         pass
 
     def some_operation(self) -> str:
-        # Вызываем фабричный метод, чтобы получить объект-продукт.
         product = self.factory_method()
 
-        # Далее, работаем с этим продуктом.
         result = f"Creator: The same creator's code has just worked with {product.operation()}"
 
         return result
