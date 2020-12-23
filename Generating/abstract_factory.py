@@ -1,6 +1,9 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 
+# Абстрактная фабрика — это порождающий паттерн проектирования, который
+# позволяет создавать семейства связанных объектов, не привязываясь к конкретным
+# классам создаваемых объектов.
 
 class AbstractFactory(ABC):
     @abstractmethod

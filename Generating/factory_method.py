@@ -9,9 +9,7 @@ class Creator(ABC):
 
     def some_operation(self) -> str:
         product = self.factory_method()
-
         result = f"Creator: The same creator's code has just worked with {product.operation()}"
-
         return result
 
 
@@ -53,3 +51,5 @@ if __name__ == "__main__":
 
     print("App: Launched with the ConcreteCreator2.")
     client_code(ConcreteCreator2())
+
+####hello a####

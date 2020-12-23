@@ -1,6 +1,10 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 
+# Состояние — это поведенческий паттерн проектирования, который
+# позволяет объектам менять поведение в зависимости от
+# своего состояния. Извне создаётся впечатление, что изменился класс объекта.
+
 
 class Context:
     _state = None
@@ -9,10 +13,6 @@ class Context:
         self.transition_to(state)
 
     def transition_to(self, state: State):
-        """
-        Контекст позволяет изменять объект Состояния во время выполнения.
-        """
-
         print(f"Context: Transition to {type(state).__name__}")
         self._state = state
         self._state.context = self

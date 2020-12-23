@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+# Фасад — это структурный паттерн проектирования, который
+# предоставляет простой интерфейс к сложной
+# системе классов, библиотеке или фреймворку.
 
 class Facade:
     def __init__(self, subsystem1: Subsystem1, subsystem2: Subsystem2) -> None:

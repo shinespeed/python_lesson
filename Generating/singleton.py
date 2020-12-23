@@ -10,9 +10,7 @@ def main():
     print("Object created", s)
     s1 = Singleton()
     print("Object created", s1)
-    s2 = Singleton()
-    print("Object created", s1)
-    print(s2 == s1)
+
 
 if __name__ == "__main__":
     main()

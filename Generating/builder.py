@@ -2,6 +2,10 @@ from __future__ import annotations
 from abc import ABC, abstractmethod, abstractproperty
 from typing import Any
 
+# Строитель — это порождающий паттерн проектирования, который
+# позволяет создавать сложные объекты пошагово.
+# Строитель даёт возможность использовать один и тот же
+# код строительства для получения разных представлений объектов.
 
 class Builder(ABC):
     @abstractproperty
@@ -43,8 +47,11 @@ class ConcreteBuilder1(Builder):
     def produce_part_c(self) -> None:
         self._product.add("PartC1")
 
+    def produce_part_z(self) -> None:
+        self._product.add("PartZ1")
 
-class Product1():
+
+class Product1:
     def __init__(self) -> None:
         self.parts = []
 
@@ -74,6 +81,7 @@ class Director:
         self.builder.produce_part_a()
         self.builder.produce_part_b()
         self.builder.produce_part_c()
+        self.builder.produce_part_z()
 
 
 if __name__ == "__main__":
