@@ -9,5 +9,6 @@ def func_open(func):
 def func_close():
     return 1
 
+#asd
 
 print(func_close())
