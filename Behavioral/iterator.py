@@ -25,6 +25,7 @@ class AlphabeticalOrderIterator(Iterator):
 
         return value
 
+###i'm enter change####
 
 class WordsCollection(Iterable):
     def __init__(self, collection: List[Any] = []) -> None:
