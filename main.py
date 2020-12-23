@@ -1,12 +1,13 @@
-class Test:
-    def func(self):
-        print("hello")
+def func_open(func):
+    def wrapper():
+        print('hello!')
+        return func
+    return wrapper
 
 
-test = Test()
-test.add = 5;
+@func_open
+def func_close():
+    return 1
 
-pisok = [2, 5, 6]
 
-df = func_dec()
-print(df())
+print(func_close())

@@ -47,9 +47,6 @@ class ConcreteBuilder1(Builder):
     def produce_part_c(self) -> None:
         self._product.add("PartC1")
 
-    def produce_part_z(self) -> None:
-        self._product.add("PartZ1")
-
 
 class Product1:
     def __init__(self) -> None:
@@ -81,7 +78,6 @@ class Director:
         self.builder.produce_part_a()
         self.builder.produce_part_b()
         self.builder.produce_part_c()
-        self.builder.produce_part_z()
 
 
 if __name__ == "__main__":
