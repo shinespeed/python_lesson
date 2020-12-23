@@ -76,3 +76,5 @@ if __name__ == "__main__":
     subject.detach(observer_a)
 
     subject.some_business_logic()
+
+#mvc mvp mvvp на патерне каком работает джанго настроить авторизацию sqllite posgres
