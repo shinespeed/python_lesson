@@ -10,7 +10,10 @@ def main():
     print("Object created", s)
     s1 = Singleton()
     print("Object created", s1)
+    print(s1 == s)
 
 
 if __name__ == "__main__":
     main()
+
+##hello

@@ -11,7 +11,7 @@ class AlphabeticalOrderIterator(Iterator):
 
     _reverse: bool = False
 
-    def __init__(self, collection: WordsCollection, reverse: bool = False) -> None:
+    def __init__(self, collection: WordsCollection, reverse: bool = False):
         self._collection = collection
         self._reverse = reverse
         self._position = -1 if reverse else 0
@@ -25,10 +25,9 @@ class AlphabeticalOrderIterator(Iterator):
 
         return value
 
-###i'm enter change####
 
 class WordsCollection(Iterable):
-    def __init__(self, collection: List[Any] = []) -> None:
+    def __init__(self, collection: List[Any] = []):
         self._collection = collection
 
     def __iter__(self) -> AlphabeticalOrderIterator:
