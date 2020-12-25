@@ -29,7 +29,6 @@ class Subsystem1:
 
 
 class Subsystem2:
-
     def operation1(self) -> str:
         return "Subsystem2: Get ready!"
 
