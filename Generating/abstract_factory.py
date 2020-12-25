@@ -34,7 +34,6 @@ class AbstractProductA(ABC):
         pass
 
 
-
 class ConcreteProductA1(AbstractProductA):
     def useful_function_a(self) -> str:
         return "The result of the product A1."
@@ -58,7 +57,6 @@ class AbstractProductB(ABC):
 class ConcreteProductB1(AbstractProductB):
     def useful_function_b(self) -> str:
         return "The result of the product B1."
-
 
     def another_useful_function_b(self, collaborator: AbstractProductA) -> str:
         result = collaborator.useful_function_a()
@@ -87,6 +85,7 @@ if __name__ == "__main__":
     client_code(ConcreteFactory1())
 
     print("\n")
+
 
     print("Client: Testing the same client code with the second factory type:")
     client_code(ConcreteFactory2())
