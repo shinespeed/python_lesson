@@ -1,14 +1,27 @@
-def func_open(func):
-    def wrapper():
-        print('hello!')
-        return func
-    return wrapper
+from abc import ABC, abstractmethod
 
 
-@func_open
-def func_close():
-    return 1
+class Animal:
+    @abstractmethod
+    def func_say(self):
+        pass
 
-#asd
 
-print(func_close())
+class Dog(Animal):
+    def func_say(self):
+        print('gav gav')
+
+
+class Cat(Animal):
+    def func_say(self):
+        print('may may')
+
+
+class Speak:
+    def __init__(self, animal: Animal):
+        animal.func_say()
+
+
+if __name__ == '__main__':
+    cat = Dog()
+    Speak(cat)
