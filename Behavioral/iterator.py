@@ -6,6 +6,7 @@ from typing import Any, List
 # последовательно обходить сложную коллекцию, без
 # раскрытия деталей её реализации.
 
+
 class AlphabeticalOrderIterator(Iterator):
     _position: int = None
 
