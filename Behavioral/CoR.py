@@ -2,6 +2,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any, Optional
 
+# Цепочка обязанностей — это поведенческий паттерн проектирования, который
+# позволяет передавать запросы последовательно по цепочке обработчиков.
+# Каждый последующий обработчик решает, может ли он обработать запрос сам и
+# стоит ли передавать запрос дальше по цепи.
+
 
 class Handler(ABC):
     @abstractmethod
@@ -18,16 +23,12 @@ class AbstractHandler(Handler):
 
     def set_next(self, handler: Handler) -> Handler:
         self._next_handler = handler
-        # Возврат обработчика отсюда позволит связать обработчики простым
-        # способом, вот так:
-        # monkey.set_next(squirrel).set_next(dog)
         return handler
 
     @abstractmethod
     def handle(self, request: Any) -> str:
         if self._next_handler:
             return self._next_handler.handle(request)
-
         return None
 
 
