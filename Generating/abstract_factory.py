@@ -19,6 +19,7 @@ class ConcreteFactory1(AbstractFactory):
     def create_product_b(self) -> AbstractProductB:
         return ConcreteProductB1()
 
+#hello
 
 class ConcreteFactory2(AbstractFactory):
     def create_product_a(self) -> AbstractProductA:

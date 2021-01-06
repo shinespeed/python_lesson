@@ -2,6 +2,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List
 
+#Посетитель — это поведенческий паттерн проектирования,
+#который позволяет добавлять в программу новые операции,
+#не изменяя классы объектов, над которыми эти операции могут выполняться.
 
 class Component(ABC):
     @abstractmethod
