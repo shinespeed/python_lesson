@@ -24,6 +24,7 @@ class Builder(ABC):
     def produce_part_c(self) -> None:
         pass
 
+#hello
 
 class ConcreteBuilder1(Builder):
     def __init__(self) -> None:
