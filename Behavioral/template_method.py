@@ -5,67 +5,52 @@ from abc import ABC, abstractmethod
 # его шаги на подклассы. Паттерн позволяет подклассам переопределять шаги
 # алгоритма, не меняя его общей структуры.
 
-class AbstractClass(ABC):
+class GameAI(ABC):
     def template_method(self) -> None:
-        self.base_operation1()
-        self.required_operations1()
-        self.base_operation2()
-        self.hook1()
-        self.required_operations2()
-        self.base_operation3()
-        self.hook2()
+        self.base_operation()
+        self.buildUnits()
+        self.heavyWeapon()
+        self.easyWeapon()
 
-    def base_operation1(self) -> None:
-        print("AbstractClass says: I am doing the bulk of the work")
 
-    def base_operation2(self) -> None:
-        print("AbstractClass says: But I let subclasses override some operations")
-
-    def base_operation3(self) -> None:
-        print("AbstractClass says: But I am doing the bulk of the work anyway")
+    def base_operation(self):
+        print("GameAI: creating a basic template")
 
     @abstractmethod
-    def required_operations1(self) -> None:
+    def buildUnits(self):
         pass
 
-    @abstractmethod
-    def required_operations2(self) -> None:
+    def heavyWeapon(self):
         pass
 
-    def hook1(self) -> None:
-        pass
-
-    def hook2(self) -> None:
+    def easyWeapon(self):
         pass
 
 
-class ConcreteClass1(AbstractClass):
-    def required_operations1(self) -> None:
-        print("ConcreteClass1 says: Implemented Operation1")
+class Teminators(GameAI):
+    def buildUnits(self):
+        print("Teminators: metal frame")
 
-    def required_operations2(self) -> None:
-        print("ConcreteClass1 says: Implemented Operation2")
-
-
-class ConcreteClass2(AbstractClass):
-    def required_operations1(self) -> None:
-        print("ConcreteClass2 says: Implemented Operation1")
-
-    def required_operations2(self) -> None:
-        print("ConcreteClass2 says: Implemented Operation2")
-
-    def hook1(self) -> None:
-        print("ConcreteClass2 says: Overridden Hook1")
+    def heavyWeapon(self):
+        print("Teminators: MINIGAN!!!")
 
 
-def client_code(abstract_class: AbstractClass) -> None:
-    abstract_class.template_method()
+class Humans(GameAI):
+    def buildUnits(self):
+        print("Humans: Protein structure")
+
+    def easyWeapon(self):
+        print("Humans: ak - 47")
+
+
+def client_code(gameAI: GameAI) -> None:
+    gameAI.template_method()
 
 
 if __name__ == "__main__":
     print("Same client code can work with different subclasses:")
-    client_code(ConcreteClass1())
+    client_code(Teminators())
     print("")
 
     print("Same client code can work with different subclasses:")
-    client_code(ConcreteClass2())
+    client_code(Humans())

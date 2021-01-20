@@ -1,8 +1,10 @@
 class Singleton:
+    _instance = None
+
     def __new__(cls):
-        if not hasattr(cls, 'instance'):
-            cls.instance = super(cls, Singleton).__new__(cls)
-        return cls.instance
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
 
 
 if __name__ == "__main__":

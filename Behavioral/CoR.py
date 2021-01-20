@@ -8,74 +8,74 @@ from typing import Any, Optional
 # стоит ли передавать запрос дальше по цепи.
 
 
-class Handler(ABC):
+class Command(ABC):
     @abstractmethod
-    def set_next(self, handler: Handler) -> Handler:
+    def set_next(self, command: Command):
         pass
 
     @abstractmethod
-    def handle(self, request) -> Optional[str]:
+    def handle(self, request):
         pass
 
 
-class AbstractHandler(Handler):
-    _next_handler: Handler = None
+class AbstractCommand(Command):
+    _next_command: Command = None
 
-    def set_next(self, handler: Handler) -> Handler:
-        self._next_handler = handler
-        return handler
+    def set_next(self, command: Command):
+        self._next_command = command
+        return command
 
     @abstractmethod
-    def handle(self, request: Any) -> str:
-        if self._next_handler:
-            return self._next_handler.handle(request)
+    def handle(self, request: Any):
+        if self._next_command:
+            return self._next_command.handle(request)
         return None
 
 
-class MonkeyHandler(AbstractHandler):
-    def handle(self, request: Any) -> str:
-        if request == "Banana":
-            return f"Monkey: I'll eat the {request}"
+class ServerA(AbstractCommand):
+    def handle(self, request: Any):
+        if request == "ScriptA":
+            return f"I'm ServerA and i like {request}"
         else:
             return super().handle(request)
 
 
-class SquirrelHandler(AbstractHandler):
-    def handle(self, request: Any) -> str:
-        if request == "Nut":
-            return f"Squirrel: I'll eat the {request}"
+class ServerB(AbstractCommand):
+    def handle(self, request: Any):
+        if request == "ScriptB":
+            return f"I'm ServerB and i like {request}"
         else:
             return super().handle(request)
 
 
-class DogHandler(AbstractHandler):
-    def handle(self, request: Any) -> str:
-        if request == "MeatBall":
-            return f"Dog: I'll eat the {request}"
+class ServerC(AbstractCommand):
+    def handle(self, request: Any):
+        if request == "ScriptC":
+            return f"I'm ServerC and i like {request}"
         else:
             return super().handle(request)
 
 
-def client_code(handler: Handler) -> None:
-    for food in ["Nut", "Banana", "Cup of coffee"]:
-        print(f"\nClient: Who wants a {food}?")
-        result = handler.handle(food)
+def client_code(command: Command):
+    for request in ["ScriptA", "ScriptB", "ScriptC"]:
+        print(f"\nClient: Who wants a {request}?")
+        result = command.handle(request)
         if result:
             print(f"  {result}", end="")
         else:
-            print(f"  {food} was left untouched.", end="")
+            print(f"  {request} was left untouched.", end="")
 
 
 if __name__ == "__main__":
-    monkey = MonkeyHandler()
-    squirrel = SquirrelHandler()
-    dog = DogHandler()
+    serverA = ServerA()
+    serverB = ServerB()
+    serverC = ServerC()
 
-    monkey.set_next(squirrel).set_next(dog)
+    serverA.set_next(serverB).set_next(serverC)
 
-    print("Chain: Monkey > Squirrel > Dog")
-    client_code(monkey)
+    print("Chain: ServerA > ServerB > ServerC")
+    client_code(serverA)
     print("\n")
 
-    print("Subchain: Squirrel > Dog")
-    client_code(squirrel)
+    print("Subchain: ServerB > ServerC")
+    client_code(serverB)

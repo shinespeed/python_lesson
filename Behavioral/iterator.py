@@ -7,12 +7,11 @@ from typing import Any, List
 # раскрытия деталей её реализации.
 
 
-class AlphabeticalOrderIterator(Iterator):
+class FilterController(Iterator):
     _position: int = None
-
     _reverse: bool = False
 
-    def __init__(self, collection: WordsCollection, reverse: bool = False):
+    def __init__(self, collection: DataBase, reverse: bool = False):
         self._collection = collection
         self._reverse = reverse
         self._position = -1 if reverse else 0
@@ -27,29 +26,29 @@ class AlphabeticalOrderIterator(Iterator):
         return value
 
 
-class WordsCollection(Iterable):
+class DataBase(Iterable):
     def __init__(self, collection: List[Any] = []):
         self._collection = collection
 
-    def __iter__(self) -> AlphabeticalOrderIterator:
-        return AlphabeticalOrderIterator(self._collection)
+    def __iter__(self):
+        return FilterController(self._collection)
 
-    def get_reverse_iterator(self) -> AlphabeticalOrderIterator:
-        return AlphabeticalOrderIterator(self._collection, True)
+    def get_reverse(self):
+        return FilterController(self._collection, True)
 
     def add_item(self, item: Any):
         self._collection.append(item)
 
 
 if __name__ == "__main__":
-    collection = WordsCollection()
-    collection.add_item("First")
-    collection.add_item("Second")
-    collection.add_item("Third")
+    dataBase = DataBase()
+    dataBase.add_item("First Record")
+    dataBase.add_item("Second Record")
+    dataBase.add_item("Third Record")
 
     print("Straight traversal:")
-    print("\n".join(collection))
+    print("\n".join(dataBase))
     print("")
 
     print("Reverse traversal:")
-    print("\n".join(collection.get_reverse_iterator()), end="")
+    print("\n".join(dataBase.get_reverse()), end="")

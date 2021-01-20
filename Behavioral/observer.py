@@ -1,80 +1,68 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from random import randrange
 from typing import List
 
 
 class Subject(ABC):
     @abstractmethod
-    def attach(self, observer: Observer) -> None:
+    def attach(self, observer: Observer):
         pass
 
     @abstractmethod
-    def detach(self, observer: Observer) -> None:
+    def detach(self, observer: Observer):
         pass
 
     @abstractmethod
-    def notify(self) -> None:
+    def notify(self):
         pass
 
 
-class ConcreteSubject(Subject):
-    _state: int = None
-
+class InternetShop(Subject):
     _observers: List[Observer] = []
 
-    def attach(self, observer: Observer) -> None:
-        print("Subject: Attached an observer.")
+    def attach(self, observer: Observer):
+        print("InternetShop: Attached an observer.")
         self._observers.append(observer)
 
-    def detach(self, observer: Observer) -> None:
+    def detach(self, observer: Observer):
         self._observers.remove(observer)
 
-    def notify(self) -> None:
-        print("Subject: Notifying observers...")
+    def notify(self):
         for observer in self._observers:
-            observer.update(self)
+            observer.update()
 
-    def some_business_logic(self) -> None:
-        print("\nSubject: I'm doing something important.")
-        self._state = randrange(0, 10)
-
-        print(f"Subject: My state has just changed to: {self._state}")
+    def notification(self):
+        print(f"InternetShop: I begin notification")
         self.notify()
 
 
 class Observer(ABC):
     @abstractmethod
-    def update(self, subject: Subject) -> None:
+    def update(self):
         pass
 
 
-class ConcreteObserverA(Observer):
-    def update(self, subject: Subject) -> None:
-        if subject._state < 3:
-            print("ConcreteObserverA: Reacted to the event")
+class EmailAlert(Observer):
+    def update(self):
+        print("EmailAlert: notification completed")
 
 
-class ConcreteObserverB(Observer):
-    def update(self, subject: Subject) -> None:
-        if subject._state == 0 or subject._state >= 2:
-            print("ConcreteObserverB: Reacted to the event")
+class SMSAlert(Observer):
+    def update(self):
+        print("SMSAlert: notification completed")
 
 
 if __name__ == "__main__":
-    subject = ConcreteSubject()
+    internetShop = InternetShop()
 
-    observer_a = ConcreteObserverA()
-    subject.attach(observer_a)
+    observer_email = EmailAlert()
+    internetShop.attach(observer_email)
 
-    observer_b = ConcreteObserverB()
-    subject.attach(observer_b)
+    observer_sms = SMSAlert()
+    internetShop.attach(observer_sms)
 
-    subject.some_business_logic()
-    subject.some_business_logic()
+    internetShop.notification()
 
-    subject.detach(observer_a)
+    internetShop.detach(observer_email)
 
-    subject.some_business_logic()
-
-#mvc mvp mvvp на патерне каком работает джанго настроить авторизацию sqllite posgres
+    internetShop.notification()

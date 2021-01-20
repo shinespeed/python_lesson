@@ -8,66 +8,60 @@ from abc import ABC, abstractmethod
 
 class Command(ABC):
     @abstractmethod
-    def execute(self) -> None:
+    def execute(self):
         pass
 
 
-class SimpleCommand(Command):
-    def __init__(self, payload: str) -> None:
+class OkCommand(Command):
+    def __init__(self, payload: str):
         self._payload = payload
 
-    def execute(self) -> None:
-        print(f"SimpleCommand: See, I can do simple things like printing"
-              f"({self._payload})")
+    def execute(self):
+        print(f"OkCommand: "
+              f"({self._payload})"
+              f" ...command executed")
 
 
-class ComplexCommand(Command):
-    def __init__(self, receiver: Receiver, a: str, b: str) -> None:
-        self._receiver = receiver
+class SaveCommand(Command):
+    def __init__(self, controller: Controller, a: str, b: str):
+        self._controller = controller
         self._a = a
         self._b = b
 
-    def execute(self) -> None:
-        print("ComplexCommand: Complex stuff should be done by a receiver object", end="")
-        self._receiver.do_something(self._a)
-        self._receiver.do_something_else(self._b)
+    def execute(self):
+        print("SaveCommand: call controller", end="")
+        self._controller.do_something(self._a)
+        self._controller.do_something_else(self._b)
 
 
-class Receiver:
-    def do_something(self, a: str) -> None:
-        print(f"\nReceiver: Working on ({a}.)", end="")
+class Controller:
+    def do_something(self, a: str):
+        print(f"\nController: Working on ({a}.)", end="")
 
-    def do_something_else(self, b: str) -> None:
-        print(f"\nReceiver: Also working on ({b}.)", end="")
+    def do_something_else(self, b: str):
+        print(f"\nController: Also working on ({b}.)", end="")
 
 
-class Invoker:
-    _on_start = None
-    _on_finish = None
+class Button:
+    _first_command = None
+    _second_command = None
 
-    def set_on_start(self, command: Command):
-        self._on_start = command
+    def set_first_command(self, command: Command):
+        self._first_command = command
 
-    def set_on_finish(self, command: Command):
-        self._on_finish = command
+    def set_second_command(self, command: Command):
+        self._second_command = command
 
-    def do_something_important(self) -> None:
-        print("Invoker: Does anybody want something done before I begin?")
-        if isinstance(self._on_start, Command):
-            self._on_start.execute()
-
-        print("Invoker: ...doing something really important...")
-
-        print("Invoker: Does anybody want something done after I finish?")
-        if isinstance(self._on_finish, Command):
-            self._on_finish.execute()
+    def execute_command(self):
+        print("Button: I'm waiting for the command...")
+        self._first_command.execute()
+        print("Button: ...doing something really important...")
+        self._second_command.execute()
 
 
 if __name__ == "__main__":
-    invoker = Invoker()
-    invoker.set_on_start(SimpleCommand("Say Hi!"))
-    receiver = Receiver()
-    invoker.set_on_finish(ComplexCommand(
-        receiver, "Send email", "Save report"))
-
-    invoker.do_something_important()
+    button = Button()
+    button.set_first_command(OkCommand("Hi!"))
+    controller = Controller()
+    button.set_second_command(SaveCommand(controller, "Send email", "Save report"))
+    button.execute_command()

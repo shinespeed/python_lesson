@@ -7,48 +7,56 @@ from typing import List
 # чего алгоритмы можно взаимозаменять прямо во время исполнения программы.
 
 
-class Context():
-    def __init__(self, strategy: Strategy) -> None:
-        self._strategy = strategy
+class RouteStrategy():
+    def __init__(self, navigator: Navigator):
+        self._navigator = navigator
 
     @property
-    def strategy(self) -> Strategy:
+    def navigator(self):
+        return self._navigator
 
-        return self._strategy
+    @navigator.setter
+    def navigator(self, navigator: Navigator):
+        self._navigator = navigator
 
-    @strategy.setter
-    def strategy(self, strategy: Strategy) -> None:
-
-        self._strategy = strategy
-
-    def do_some_business_logic(self) -> None:
-        print("Context: Sorting data using the strategy (not sure how it'll do it)")
-        result = self._strategy.do_algorithm(["a", "b", "c", "d", "e"])
-        print(",".join(result))
+    def buildRoute(self):
+        result = self._navigator.building_a_route()
+        print(result)
 
 
-class Strategy(ABC):
+class Navigator(ABC):
     @abstractmethod
-    def do_algorithm(self, data: List):
+    def building_a_route(self, data: List):
         pass
 
 
-class ConcreteStrategyA(Strategy):
-    def do_algorithm(self, data: List) -> List:
-        return sorted(data)
+class RoadStrategy(Navigator):
+    def building_a_route(self):
+        _string = 'Route for Road build'
+        return _string
 
 
-class ConcreteStrategyB(Strategy):
-    def do_algorithm(self, data: List) -> List:
-        return reversed(sorted(data))
+class PublicTransportStrategy(Navigator):
+    def building_a_route(self):
+        _string = 'Route for Public Transport build'
+        return _string
+
+
+class WalkingStrategy(Navigator):
+    def building_a_route(self):
+        _string = 'Route for Walking build'
+        return _string
 
 
 if __name__ == "__main__":
-    context = Context(ConcreteStrategyA())
-    print("Client: Strategy is set to normal sorting.")
-    context.do_some_business_logic()
-    print()
+    routeStrategy = RouteStrategy(RoadStrategy())
+    print("Client: Building a route for Road.")
+    routeStrategy.buildRoute()
 
-    print("Client: Strategy is set to reverse sorting.")
-    context.strategy = ConcreteStrategyB()
-    context.do_some_business_logic()
+    print("Client: Building a route for Walking.")
+    routeStrategy.navigator = WalkingStrategy()
+    routeStrategy.buildRoute()
+
+    print("Client: Building a route for Public Transport")
+    routeStrategy.navigator = PublicTransportStrategy()
+    routeStrategy.buildRoute()

@@ -2,104 +2,121 @@ from __future__ import annotations
 from abc import ABC, abstractmethod, abstractproperty
 from typing import Any
 
-# Строитель — это порождающий паттерн проектирования, который
-# позволяет создавать сложные объекты пошагово.
-# Строитель даёт возможность использовать один и тот же
-# код строительства для получения разных представлений объектов.
 
-class Builder(ABC):
-    @abstractproperty
-    def product(self) -> None:
-        pass
-
-    @abstractmethod
-    def produce_part_a(self) -> None:
-        pass
-
-    @abstractmethod
-    def produce_part_b(self) -> None:
-        pass
-
-    @abstractmethod
-    def produce_part_c(self) -> None:
-        pass
-
-#hello
-
-class ConcreteBuilder1(Builder):
-    def __init__(self) -> None:
-        self.reset()
-
-    def reset(self) -> None:
-        self._product = Product1()
-
-    @property
-    def product(self) -> Product1:
-        product = self._product
-        self.reset()
-        return product
-
-    def produce_part_a(self) -> None:
-        self._product.add("PartA1")
-
-    def produce_part_b(self) -> None:
-        self._product.add("PartB1")
-
-    def produce_part_c(self) -> None:
-        self._product.add("PartC1")
-
-
-class Product1:
-    def __init__(self) -> None:
+class RequestA:
+    def __init__(self):
         self.parts = []
 
-    def add(self, part: Any) -> None:
+    def add(self, part: Any):
         self.parts.append(part)
 
-    def list_parts(self) -> None:
-        print(f"Product parts: {', '.join(self.parts)}", end="")
+    def list_parts(self):
+        print(f"Request: {', '.join(self.parts)}", end="")
+
+
+class RequestB:
+    def __init__(self):
+        self.parts = []
+
+    def add(self, part: Any):
+        self.parts.append(part)
+
+    def list_parts(self):
+        print(f"Request parts: {', '.join(self.parts)}", end="")
+
+
+class BuilderRequest(ABC):
+    @abstractmethod
+    def request(self):
+        pass
+
+    @abstractmethod
+    def requestStepA(self):
+        pass
+
+    @abstractmethod
+    def requestStepB(self):
+        pass
+
+    @abstractmethod
+    def requestStepC(self):
+        pass
+
+
+class CreateRequestA(BuilderRequest):
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self._request = RequestA()
+
+    @property
+    def request(self):
+        request = self._request
+        self.reset()
+        return request
+
+    def requestStepA(self):
+        self._request.add("Request A Step A")
+
+    def requestStepB(self):
+        self._request.add("Request A Step B")
+
+    def requestStepC(self):
+        self._request.add("Request A Step C")
+
+
+class CreateRequestB(BuilderRequest):
+    def __init__(self):
+        self.reset()
+
+    def reset(self):
+        self._request = RequestB()
+
+    @property
+    def request(self):
+        request = self._request
+        self.reset()
+        return request
+
+    def requestStepA(self):
+        self._request.add("Request B Step A")
+
+    def requestStepB(self):
+        self._request.add("Request B Step B")
+
+    def requestStepC(self):
+        self._request.add("Request B Step C")
 
 
 class Director:
-    def __init__(self) -> None:
-        self._builder = None
+    def __init__(self):
+        self._builderRequest = None
 
     @property
-    def builder(self) -> Builder:
-        return self._builder
+    def builderRequest(self):
+        return self._builderRequest
 
-    @builder.setter
-    def builder(self, builder: Builder) -> None:
-        self._builder = builder
+    @builderRequest.setter
+    def builderRequest(self, builderRequest: BuilderRequest):
+        self._builderRequest = builderRequest
 
-    def build_minimal_viable_product(self) -> None:
-        self.builder.produce_part_a()
+    def build_min_request(self):
+        self.builderRequest.requestStepC()
 
-    def build_full_featured_product(self) -> None:
-        self.builder.produce_part_a()
-        self.builder.produce_part_b()
-        self.builder.produce_part_c()
+    def build_mid_request(self):
+        self.builderRequest.requestStepA()
+        self.builderRequest.requestStepC()
+
+    def build_max_request(self):
+        self.builderRequest.requestStepA()
+        self.builderRequest.requestStepB()
+        self.builderRequest.requestStepC()
 
 
 if __name__ == "__main__":
-
+    builder = CreateRequestB()
     director = Director()
-    builder = ConcreteBuilder1()
-    director.builder = builder
-
-    print("Standard basic product: ")
-    director.build_minimal_viable_product()
-    builder.product.list_parts()
-
-    print("\n")
-
-    print("Standard full featured product: ")
-    director.build_full_featured_product()
-    builder.product.list_parts()
-
-    print("\n")
-
-    print("Custom product: ")
-    builder.produce_part_a()
-    builder.produce_part_b()
-    builder.product.list_parts()
+    director.builderRequest = builder
+    director.build_max_request()
+    builder.request.list_parts()

@@ -1,27 +1,10 @@
-from abc import ABC, abstractmethod
+class Dog:
+    koo = 5
 
-
-class Animal:
-    @abstractmethod
-    def func_say(self):
-        pass
-
-
-class Dog(Animal):
-    def func_say(self):
-        print('gav gav')
-
-
-class Cat(Animal):
-    def func_say(self):
-        print('may may')
-
-
-class Speak:
-    def __init__(self, animal: Animal):
-        animal.func_say()
+    def func1(self):
+        print('hy')
 
 
 if __name__ == '__main__':
-    cat = Dog()
-    Speak(cat)
+    boo = Dog()
+    print(Dog.__dict__)

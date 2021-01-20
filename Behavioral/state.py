@@ -6,63 +6,61 @@ from abc import ABC, abstractmethod
 # своего состояния. Извне создаётся впечатление, что изменился класс объекта.
 
 
-class Context:
+class Player:
     _state = None
 
-    def __init__(self, state: State) -> None:
-        self.transition_to(state)
+    def __init__(self, state: State):
+        self.switch(state)
 
-    def transition_to(self, state: State):
-        print(f"Context: Transition to {type(state).__name__}")
+    def switch(self, state: State):
+        print(f"Context: switch to {type(state).__name__}")
         self._state = state
         self._state.context = self
 
-    def request1(self):
-        self._state.handle1()
+    def state_play(self):
+        self._state.clickPlay()
 
-    def request2(self):
-        self._state.handle2()
+    def state_pause(self):
+        self._state.clickPause()
 
 
 class State(ABC):
     @property
-    def context(self) -> Context:
+    def context(self):
         return self._context
 
     @context.setter
-    def context(self, context: Context) -> None:
+    def context(self, context: Player):
         self._context = context
 
     @abstractmethod
-    def handle1(self) -> None:
+    def clickPause(self):
         pass
 
     @abstractmethod
-    def handle2(self) -> None:
+    def clickPlay(self):
         pass
 
 
-class ConcreteStateA(State):
-    def handle1(self) -> None:
-        print("ConcreteStateA handles request1.")
-        print("ConcreteStateA wants to change the state of the context.")
-        self.context.transition_to(ConcreteStateB())
+class PlayingState(State):
+    def clickPause(self):
+        print("PlayingState clickPause state_pause.")
+        self.context.switch(LockedState())
 
-    def handle2(self) -> None:
-        print("ConcreteStateA handles request2.")
+    def clickPlay(self):
+        print("PlayingState clickPlay state_pause")
 
 
-class ConcreteStateB(State):
-    def handle1(self) -> None:
-        print("ConcreteStateB handles request1.")
+class LockedState(State):
+    def clickPause(self):
+        print("LockedState clickPause state_pause.")
 
-    def handle2(self) -> None:
-        print("ConcreteStateB handles request2.")
-        print("ConcreteStateB wants to change the state of the context.")
-        self.context.transition_to(ConcreteStateA())
+    def clickPlay(self):
+        print("LockedState clickPlay state_play.")
+        self.context.switch(PlayingState())
 
 
 if __name__ == "__main__":
-    context = Context(ConcreteStateA())
-    context.request1()
-    context.request2()
+    context = Player(PlayingState())
+    context.state_pause()
+    context.state_play()

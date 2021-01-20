@@ -2,52 +2,52 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 
 
-class Creator(ABC):
+class FactoryRequest(ABC):
     @abstractmethod
-    def factory_method(self):
+    def createRequest(self):
         pass
 
-    def some_operation(self) -> str:
-        product = self.factory_method()
-        result = f"Creator: The same creator's code has just worked with {product.operation()}"
+    def some_operation(self):
+        request = self.createRequest()
+        result = f"Creator: The same creator's code has just worked with {request.operation()}"
         return result
 
 
-class ConcreteCreator1(Creator):
-    def factory_method(self) -> Product:
-        return ConcreteProduct1()
+class FactoryRequestA(FactoryRequest):
+    def createRequest(self):
+        return ConcrectRequestA()
 
 
-class ConcreteCreator2(Creator):
-    def factory_method(self) -> Product:
-        return ConcreteProduct2()
+class FactoryRequestB(FactoryRequest):
+    def createRequest(self):
+        return ConcrectRequestB()
 
 
-class Product(ABC):
+class ConcretRequest(ABC):
     @abstractmethod
-    def operation(self) -> str:
+    def operation(self):
         pass
 
 
-class ConcreteProduct1(Product):
-    def operation(self) -> str:
-        return "{Result of the ConcreteProduct1}"
+class ConcrectRequestA(ConcretRequest):
+    def operation(self):
+        return "{Result of the ConcrectRequestA}"
 
 
-class ConcreteProduct2(Product):
-    def operation(self) -> str:
-        return "{Result of the ConcreteProduct2}"
+class ConcrectRequestB(ConcretRequest):
+    def operation(self):
+        return "{Result of the ConcrectRequestB}"
 
 
-def client_code(creator: Creator) -> None:
+def client_code(creator: FactoryRequest):
     print(f"Client: I'm not aware of the creator's class, but it still works.\n"
           f"{creator.some_operation()}", end="")
 
 
 if __name__ == "__main__":
-    print("App: Launched with the ConcreteCreator1.")
-    client_code(ConcreteCreator1())
+    print("App: Launched with the ConcrectRequestA.")
+    client_code(FactoryRequestA())
     print("\n")
 
-    print("App: Launched with the ConcreteCreator2.")
-    client_code(ConcreteCreator2())
+    print("App: Launched with the ConcrectRequestB.")
+    client_code(FactoryRequestB())

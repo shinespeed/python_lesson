@@ -1,75 +1,71 @@
 from __future__ import annotations
 from abc import ABC
 
-#Посредник — это поведенческий паттерн проектирования,
-# который позволяет уменьшить связанность множества классов
-# между собой, благодаря перемещению этих связей в один класс-посредник.
 
 class Mediator(ABC):
-    def notify(self, sender: object, event: str) -> None:
+    def notify(self, sender: object, event: str):
         pass
 
 
-class ConcreteMediator(Mediator):
-    def __init__(self, component1: Component1, component2: Component2) -> None:
-        self._component1 = component1
-        self._component1.mediator = self
-        self._component2 = component2
-        self._component2.mediator = self
+class Alert(Mediator):
+    def __init__(self, gasSensor: GasSensor, uvSensor: UVSensor):
+        self._gasSensor = gasSensor
+        self._gasSensor.mediator = self
+        self._uvSensor = uvSensor
+        self._uvSensor.mediator = self
 
-    def notify(self, sender: object, event: str) -> None:
-        if event == "A":
-            print("Mediator reacts on A and triggers following operations:")
-            self._component2.do_c()
-        elif event == "D":
-            print("Mediator reacts on D and triggers following operations:")
-            self._component1.do_b()
-            self._component2.do_c()
+    def notify(self, sender: object, event: str):
+        if event == "modeGasA":
+            print("Mediator reacts on modeGasA and triggers:")
+            self._uvSensor.modeUV_A()
+        elif event == "modeUV_B":
+            print("Mediator reacts on modeUV_B and triggers:")
+            self._gasSensor.modeGasB()
+            self._uvSensor.modeUV_A()
 
 
-class BaseComponent:
-    def __init__(self, mediator: Mediator = None) -> None:
+class BaseSensor:
+    def __init__(self, mediator: Mediator = None):
         self._mediator = mediator
 
     @property
-    def mediator(self) -> Mediator:
+    def mediator(self):
         return self._mediator
 
     @mediator.setter
-    def mediator(self, mediator: Mediator) -> None:
+    def mediator(self, mediator: Mediator):
         self._mediator = mediator
 
 
+class GasSensor(BaseSensor):
+    def modeGasA(self):
+        print("GasSensor does modeGasA")
+        self.mediator.notify(self, "modeGasA")
 
-class Component1(BaseComponent):
-    def do_a(self) -> None:
-        print("Component 1 does A.")
-        self.mediator.notify(self, "A")
-
-    def do_b(self) -> None:
-        print("Component 1 does B.")
-        self.mediator.notify(self, "B")
+    def modeGasB(self):
+        print("GasSensor does modeGasB")
+        self.mediator.notify(self, "modeGasB")
 
 
-class Component2(BaseComponent):
-    def do_c(self) -> None:
-        print("Component 2 does C.")
-        self.mediator.notify(self, "C")
+class UVSensor(BaseSensor):
+    def modeUV_A(self):
+        print("UVSensor does modeUV_A")
+        self.mediator.notify(self, "modeUV_A")
 
-    def do_d(self) -> None:
-        print("Component 2 does D.")
-        self.mediator.notify(self, "D")
+    def modeUV_B(self):
+        print("UVSensor does modeUV_B")
+        self.mediator.notify(self, "modeUV_B")
 
 
 if __name__ == "__main__":
-    c1 = Component1()
-    c2 = Component2()
-    mediator = ConcreteMediator(c1, c2)
+    gs = GasSensor()
+    uvs = UVSensor()
+    mediator = Alert(gs, uvs)
 
-    print("Client triggers operation A.")
-    c1.do_a()
+    print("Client triggers operation modeGasA")
+    gs.modeGasA()
 
     print("\n", end="")
 
-    print("Client triggers operation D.")
-    c2.do_d()
+    print("Client triggers operation modeUV_B")
+    uvs.modeUV_B()
