@@ -18,7 +18,7 @@ class ServerA(Server):
         commandVisitor.visit_concrete_server_a(self)
 
     def exclusive_method_of_serverA(self):
-        return "Server_A"
+        return "Special command for Server_A"
 
 
 class ServerB(Server):
@@ -26,7 +26,7 @@ class ServerB(Server):
         commandVisitor.visit_concrete_server_b(self)
 
     def special_method_of_serverB(self):
-        return "Server_B"
+        return "Special command for Server_B"
 
 
 class CommandVisitor(ABC):

@@ -6,6 +6,7 @@ from typing import Any, List
 # последовательно обходить сложную коллекцию, без
 # раскрытия деталей её реализации.
 
+переписать юмл !
 
 class FilterController(Iterator):
     _position: int = None

@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 # как аргументы при вызове методов, ставить запросы в очередь,
 # логировать их, а также поддерживать отмену операций.
 
+
 class Command(ABC):
     @abstractmethod
     def execute(self):
