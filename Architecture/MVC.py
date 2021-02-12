@@ -60,7 +60,7 @@ class Controller:
         self._view.responce_message(self._model.get_string, self._model.get_chat_id)
 
 
-class MVC:
+class Client:
     _view = TelegramView()
     _model = Model('TEST')
     _controller = Controller(_model, _view)
@@ -75,4 +75,4 @@ class MVC:
 
 
 if __name__ == "__main__":
-    mvc = MVC()
+    mvc = Client()

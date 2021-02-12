@@ -64,6 +64,3 @@ if __name__ == "__main__":
     context = Player(PlayingState())
     context.state_pause()
     context.state_play()
-
-
-структурные патерны , архитектурные патерны mvc (код), mvvp, ... uml диаграммы

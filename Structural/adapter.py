@@ -1,33 +1,30 @@
-class Target:
-    def request(self) -> str:
-        return "Target: The default target's behavior."
+class XMLdata:
+    def request(self):
+        return "XMLdata: The default XML data"
 
 
-class Adaptee:
-    def specific_request(self) -> str:
-        return ".eetpadA eht fo roivaheb laicepS"
+class JSONdata:
+    def specific_request(self):
+        return "data in the form JSON"
 
 
-class Adapter(Target, Adaptee):
-    def request(self) -> str:
-        return f"Adapter: (TRANSLATED) {self.specific_request()[::-1]}"
+class Adapter(XMLdata, JSONdata):
+    def request(self):
+        return f"Adapter: (TRANSLATED) {self.specific_request()} + now it is applicable for xml"
 
 
-def client_code(target: "Target") -> None:
-    print(target.request(), end="")
+def client_code(xmlData: "XMLdata"):
+    print(xmlData.request(), end="")
 
 
 if __name__ == "__main__":
-    print("Client: I can work just fine with the Target objects:")
-    target = Target()
-    client_code(target)
+    xmlData = XMLdata()
+    client_code(xmlData)
     print("\n")
 
-    adaptee = Adaptee()
-    print("Client: The Adaptee class has a weird interface. "
-          "See, I don't understand it:")
-    print(f"Adaptee: {adaptee.specific_request()}", end="\n\n")
+    jsonData = JSONdata()
 
-    print("Client: But I can work with it via the Adapter:")
+    print(f"JSONdata: {jsonData.specific_request()}", end="\n\n")
+
     adapter = Adapter()
     client_code(adapter)

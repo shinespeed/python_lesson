@@ -1,53 +1,52 @@
-# Декоратор — это структурный паттерн проектирования, который
-# позволяет динамически добавлять объектам новую
-# функциональность, оборачивая их в полезные «обёртки».
-
-class Component():
-    def operation(self) -> str:
+class Data():
+    def compress(self):
         pass
 
 
-class ConcreteComponent(Component):
-    def operation(self) -> str:
-        return "ConcreteComponent"
+class ImageFile(Data):
+    def compress(self):
+        return "ImageFile"
 
 
-class Decorator(Component):
-    _component: Component = None
+class CompressDecorator(Data):
+    _data: Data = None
 
-    def __init__(self, component: Component) -> None:
-        self._component = component
+    def __init__(self, data: Data):
+        self._data = data
 
     @property
-    def component(self) -> str:
-        return self._component
+    def data(self):
+        return self._data
 
-    def operation(self) -> str:
-        return self._component.operation()
-
-
-class ConcreteDecoratorA(Decorator):
-
-    def operation(self) -> str:
-        return f"ConcreteDecoratorA({self.component.operation()})"
+    def compress(self):
+        return self._data.compress()
 
 
-class ConcreteDecoratorB(Decorator):
-    def operation(self) -> str:
-        return f"ConcreteDecoratorB({self.component.operation()})"
+class GIF(CompressDecorator):
+
+    def compress(self):
+        return f"GIFCompress({self.data.compress()})"
 
 
-def client_code(component: Component) -> None:
-    print(f"RESULT: {component.operation()}", end="")
+class PNG(CompressDecorator):
+    def compress(self):
+        return f"PNGCompress({self.data.compress()})"
+
+
+class JPEG(CompressDecorator):
+    def compress(self):
+        return f"JPEGCompress({self.data.compress()})"
+
+
+def client_code(data: Data):
+    print(f"RESULT: {data.compress()}", end="")
 
 
 if __name__ == "__main__":
-    simple = ConcreteComponent()
-    print("Client: I've got a simple component:")
+    simple = ImageFile()
     client_code(simple)
     print("\n")
 
-    decorator1 = ConcreteDecoratorA(simple)
-    decorator2 = ConcreteDecoratorB(decorator1)
-    print("Client: Now I've got a decorated component:")
+    decorator1 = GIF(simple)
+    decorator2 = JPEG(decorator1)
     client_code(decorator2)

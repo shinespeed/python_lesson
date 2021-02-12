@@ -1,47 +1,42 @@
 from __future__ import annotations
 
-# Фасад — это структурный паттерн проектирования, который
-# предоставляет простой интерфейс к сложной
-# системе классов, библиотеке или фреймворку.
 
-class Facade:
-    def __init__(self, subsystem1: Subsystem1, subsystem2: Subsystem2) -> None:
-        self._subsystem1 = subsystem1 or Subsystem1()
-        self._subsystem2 = subsystem2 or Subsystem2()
+class Computer:
+    def __init__(self, cpu: CPU, mem: Memory, ssd: SSD):
+        self._cpu = cpu or CPU()
+        self._mem = mem or Memory()
+        self._ssd = ssd or SSD()
 
-    def operation(self) -> str:
+    def operation(self):
         results = []
-        results.append("Facade initializes subsystems:")
-        results.append(self._subsystem1.operation1())
-        results.append(self._subsystem2.operation1())
-        results.append("Facade orders subsystems to perform the action:")
-        results.append(self._subsystem1.operation_n())
-        results.append(self._subsystem2.operation_z())
+        results.append(self._cpu.start())
+        results.append(self._mem.load())
+        results.append(self._ssd.read())
         return "\n".join(results)
 
 
-class Subsystem1:
-    def operation1(self) -> str:
-        return "Subsystem1: Ready!"
-
-    def operation_n(self) -> str:
-        return "Subsystem1: Go!"
+class CPU:
+    def start(self):
+        return "CPU START!"
 
 
-class Subsystem2:
-    def operation1(self) -> str:
-        return "Subsystem2: Get ready!"
-
-    def operation_z(self) -> str:
-        return "Subsystem2: Fire!"
+class Memory:
+    def load(self):
+        return "MEMORY LOAD!"
 
 
-def client_code(facade: Facade) -> None:
-    print(facade.operation(), end="")
+class SSD:
+    def read(self):
+        return "SSD READ MEMORY"
+
+
+def client_code(comp: Computer):
+    print(comp.operation(), end="")
 
 
 if __name__ == "__main__":
-    subsystem1 = Subsystem1()
-    subsystem2 = Subsystem2()
-    facade = Facade(subsystem1, subsystem2)
-    client_code(facade)
+    cpu = CPU()
+    ssd = SSD()
+    memory = Memory()
+    comp = Computer(cpu, memory, ssd)
+    client_code(comp)

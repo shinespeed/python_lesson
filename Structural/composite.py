@@ -3,88 +3,49 @@ from abc import ABC, abstractmethod
 from typing import List
 
 
-class Component(ABC):
-    @property
-    def parent(self) -> Component:
-        return self._parent
-
-    @parent.setter
-    def parent(self, parent: Component):
-        self._parent = parent
-
-    def add(self, component: Component) -> None:
-        pass
-
-    def remove(self, component: Component) -> None:
-        pass
-
-    def is_composite(self) -> bool:
-        return False
-
+class IMenu(ABC):
     @abstractmethod
-    def operation(self) -> str:
+    def operation(self):
         pass
 
 
-class Leaf(Component):
-    def operation(self) -> str:
-        return "Leaf"
+class CompositeMenu(IMenu):
+    def __init__(self, name: str):
+        self._children: List[IMenu] = []
+        self._name = name
 
+    def add(self, child: IMenu):
+        self._children.append(child)
 
-class Composite(Component):
-    def __init__(self) -> None:
-        self._children: List[Component] = []
-
-    def add(self, component: Component) -> None:
-        self._children.append(component)
-        component.parent = self
-
-    def remove(self, component: Component) -> None:
-        self._children.remove(component)
-        component.parent = None
-
-    def is_composite(self) -> bool:
-        return True
-
-    def operation(self) -> str:
+    def operation(self):
         results = []
         for child in self._children:
             results.append(child.operation())
-        return f"Branch({'+'.join(results)})"
+        return f"{self._name}({'/'.join(results)})"
 
 
-def client_code(component: Component) -> None:
-    print(f"RESULT: {component.operation()}", end="")
+class LeafMenu(IMenu):
+    def __init__(self, name: str):
+        self._name = name
+
+    def operation(self):
+        return self._name
 
 
-def client_code2(component1: Component, component2: Component) -> None:
-    if component1.is_composite():
-        component1.add(component2)
-
-    print(f"RESULT: {component1.operation()}", end="")
+def client_code(menu: IMenu):
+    print(menu.operation())
 
 
 if __name__ == "__main__":
-    simple = Leaf()
-    print("Client: I've got a simple component:")
-    client_code(simple)
-    print("\n")
+    menu1 = CompositeMenu("Main page")
+    menu1.add(LeafMenu("1Page"))
+    menu1.add(LeafMenu("2Page"))
+    menu1.add(LeafMenu("3Page"))
+    menu1.add(LeafMenu("4Page"))
 
-    tree = Composite()
+    menu2 = CompositeMenu("Main2")
+    menu2.add(LeafMenu("1str"))
+    menu2.add(LeafMenu("2str"))
 
-    branch1 = Composite()
-    branch1.add(Leaf())
-    branch1.add(Leaf())
-
-    branch2 = Composite()
-    branch2.add(Leaf())
-
-    tree.add(branch1)
-    tree.add(branch2)
-
-    print("Client: Now I've got a composite tree:")
-    client_code(tree)
-    print("\n")
-
-    print("Client: I don't need to check the components classes even when managing the tree:")
-    client_code2(tree, simple)
+    menu1.add(menu2)
+    client_code(menu1)

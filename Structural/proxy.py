@@ -1,45 +1,36 @@
 from abc import ABC, abstractmethod
 
 
-class Subject(ABC):
+class DataBaseInterface(ABC):
     @abstractmethod
-    def request(self) -> None:
+    def request(self):
         pass
 
 
-class RealSubject(Subject):
-    def request(self) -> None:
-        print("RealSubject: Handling request.")
+class DataBase(DataBaseInterface):
+    def request(self):
+        print("DataBase: conclusion data")
 
 
-class Proxy(Subject):
-    def __init__(self, real_subject: RealSubject) -> None:
-        self._real_subject = real_subject
+class ProxyDataBase(DataBaseInterface):
+    def __init__(self, dataBase: DataBase):
+        self._dataBase = dataBase
 
-    def request(self) -> None:
+    def request(self):
         if self.check_access():
-            self._real_subject.request()
-            self.log_access()
+            self._dataBase.request()
 
-    def check_access(self) -> bool:
-        print("Proxy: Checking access prior to firing a real request.")
+    def check_access(self):
+        print("Proxy: Checking access to data")
         return True
 
-    def log_access(self) -> None:
-        print("Proxy: Logging the time of request.", end="")
 
-
-def client_code(subject: Subject) -> None:
-    subject.request()
+def client_code(dataBaseInterface: DataBaseInterface):
+    dataBaseInterface.request()
 
 
 if __name__ == "__main__":
-    print("Client: Executing the client code with a real subject:")
-    real_subject = RealSubject()
-    client_code(real_subject)
-
-    print("")
-
-    print("Client: Executing the same client code with a proxy:")
-    proxy = Proxy(real_subject)
-    client_code(proxy)
+    dataBase = DataBase()
+    client_code(dataBase)
+    proxyDataBase = ProxyDataBase(dataBase)
+    client_code(proxyDataBase)
