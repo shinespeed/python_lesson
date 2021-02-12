@@ -10,7 +10,7 @@ class View(ABC):
 
 
 class TelegramView(View):
-    _token = "1124654910:AAG3whPcDrG8cCtaA9ESQApYUrRKhVJqJ_8"
+    _token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     _bot = telebot.TeleBot(_token)
     Thread(target=_bot.polling, args=(True,)).start()
 
