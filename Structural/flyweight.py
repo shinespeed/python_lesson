@@ -1,66 +1,77 @@
 from typing import List
 
 
-class BlockType:
-    def __init__(self, name, color, texture):
-        self.name = name
-        self.color = color
-        self.texture = texture
+class Unit:
+    def __init__(self, coord, game):
+        self._coord = coord
+        self._game = game
+
+    def fire_at(self, unit, power_weapon: str, color: str, texture: str):
+        self._game.add_particle(self._coord, unit._coord, power_weapon, color, texture)
+
+
+class Particle:
+    def __init__(self, color, sprite):
+        self._color = color
+        self._sprite = sprite
 
     def draw(self):
-        print(self.name)
-        print(self.color)
-        print(self.texture)
-        print(self)
+        print(".....Inside state.....")
+        print("Adress: ", self)
+        print("Color: "+ self._color)
+        print("Texture: " + self._sprite)
+        print("////////////////////////")
 
 
-class BlockFactory:
-    blockType: List[BlockType] = []
+class MovingParticle:
+    def __init__(self, particle: Particle, coords: str, vector: str, speed: str):
+        self._particle = particle
+        self._coords = coords
+        self._vector = vector
+        self._speed = speed
 
-    @staticmethod
-    def getBlockType(name, color, texture):
-        type = BlockType(name, color, texture)
-        if len(BlockFactory.blockType) == 0:
-            BlockFactory.blockType.append(type)
+    def draw(self):
+        print("////////////////////////")
+        print(".....Internal state.....")
+        print("Adress: ", self)
+        print("Coord: " + self._coords)
+        print("Vector: " + self._vector)
+        print("Speed: " + self._speed)
+        self._particle.draw()
+
+
+class Game:
+    _mps: List[MovingParticle] = []
+    _particle: List[Particle] = []
+
+    def add_particle(self, coord, vector, speed, color, sprite):
+        p_temp = self.get_particle(color, sprite)
+        mp_temp = MovingParticle(p_temp, coord, vector, speed)
+        self._mps.append(mp_temp)
+
+    def get_particle(self, color, sprite):
+        temp_p = Particle(color, sprite)
+        if len(self._particle) == 0:
+            self._particle.append(temp_p)
         else:
-            for block in BlockFactory.blockType:
-                if block.__dict__ != type.__dict__:
-                    BlockFactory.blockType.append(type)
-        return type
-
-
-class Block:
-    def __init__(self, x, y, type: BlockType):
-        self.x = x
-        self.y = y
-        self.type = type
+            for particle in self._particle:
+                if particle.__dict__ == temp_p.__dict__:
+                    return particle
+            self._particle.append(temp_p)
+        return temp_p
 
     def draw(self):
-        print(self.y)
-        print(self.x)
-        self.type.draw()
-
-
-class BlockList:
-    blocks: List[Block] = []
-
-    def addBlock(self, x, y, name: str, color: str, texture: str):
-        type = BlockFactory.getBlockType(name, color, texture)
-        block = Block(x, y, type)
-        self.blocks.append(block)
-
-    def draw(self):
-        for block in self.blocks:
-            block.draw()
+        for mp in self._mps:
+            mp.draw()
 
 
 if __name__ == "__main__":
-    blockList = BlockList()
-    blockList.addBlock(33, 56, "block", "red", "texture_block")
-    blockList.addBlock(13, 15, "block", "red", "texture_block")
-    blockList.addBlock(13, 15, "block", "green", "texture_block")
-    blockList.addBlock(131, 151, "block", "green", "texture_block")
-
-    print(BlockFactory.blockType)
-
-    blockList.draw()
+    game = Game()
+    unit1 = Unit("640", game)
+    unit2 = Unit("480", game)
+    unit2.fire_at(unit1, "12", "red", "sprite.png")
+    unit2.fire_at(unit1, "52", "red", "sprite.png")
+    unit2.fire_at(unit1, "126", "blue", "sprite.png")
+    unit2.fire_at(unit1, "121", "blue", "sprite.png")
+    unit2.fire_at(unit1, "142", "yellow", "sprite.png")
+    game.draw()
